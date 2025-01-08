@@ -4,7 +4,7 @@ from typing import Tuple
 
 def entropy_func(class_count: int, num_samples: int) -> float:
     probability = class_count / num_samples
-    entropy = - probability * np.log(probability)
+    entropy = - probability * np.log2(probability)
     return entropy
 
 
@@ -54,10 +54,11 @@ class Node:
 
 
 class DecisionTreeClassifier(object):
-    def __init__(self, max_depth):
+    def __init__(self, max_depth, random_forest_version=False):
         self.depth = 0
         self.max_depth = max_depth
         self.tree = None
+        self._random_forest_version = random_forest_version
 
     @staticmethod
     def get_split_entropy(group_a: Group, group_b: Group) -> float:
@@ -72,10 +73,10 @@ class DecisionTreeClassifier(object):
         information_gain = parent_group.group_entropy() - self.get_split_entropy(child_group_a, child_group_b)
         return information_gain
 
-    def get_best_feature_split(self, feature_values: np.ndarray, classes: np.ndarray) -> float:
+    def get_best_feature_split(self, feature_values: np.ndarray, classes: np.ndarray) -> Tuple[float, float]:
         parent = Group(classes)
         possible_thresholds = np.unique(feature_values)
-        best_split_val = 0
+        best_split_val = None
         best_gain = 0
 
         for threshold in possible_thresholds:
@@ -89,15 +90,25 @@ class DecisionTreeClassifier(object):
             if gain >= best_gain:
                 best_gain = gain
                 best_split_val = threshold
-        return best_split_val
+        return best_split_val, best_gain
 
     def get_best_split(self, data: np.ndarray, classes: np.ndarray) -> Tuple[int, float, float]:
-        best_argument = 0
-        best_split = 0
+        best_argument = None
+        best_split = None
         best_gain = 0
-        for argument in range(data.shape[1]):
 
-            split_val = self.get_best_feature_split(data[:, argument], classes)
+        num_arguments = data.shape[1]
+        chosen_arguments = [x for x in range(num_arguments)]
+
+        if self._random_forest_version:
+            chosen_arguments = np.random.choice(chosen_arguments, size=int(np.floor(np.sqrt(num_arguments))),
+                                                replace=False)
+        for argument in chosen_arguments:
+
+            split_val, split_gain = self.get_best_feature_split(data[:, argument], classes)
+            if split_val is None:
+                continue
+
             child_a, child_b = split(data, classes, argument, split_val)
             child_a = Group(child_a[:, -1])
             child_b = Group(child_b[:, -1])
@@ -115,6 +126,9 @@ class DecisionTreeClassifier(object):
             return Node(val=Counter(classes).most_common(1)[0][0])
 
         best_argument, best_split, best_gain = self.get_best_split(data, classes)
+
+        if best_argument is None:
+            return Node(val=Counter(classes).most_common(1)[0][0])
 
         child_a_data, child_b_data = split(data, classes, best_argument, best_split)
         child_a_classes = child_a_data[:, -1]
