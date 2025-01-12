@@ -8,6 +8,10 @@ class Classifier:
         self._trained = False
         self._possible_classes = None
 
+    def _get_probabilities_for_classes(self, classes: np.array) -> np.array:
+        c = Counter(classes)
+        return np.array([c.get(x, 0) / sum(c.values()) for x in self._possible_classes])
+
     def fit(self, data: np.array, classes: np.array, **kwargs) -> None:
         """
         Trains the model on the provided dataset and class labels.

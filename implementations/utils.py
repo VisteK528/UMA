@@ -1,5 +1,16 @@
 import numpy as np
 from .exceptions import ClassNotExistingError, MeasuresOfQualityNotCompiledError
+from .classifiers import Classifier
+import pickle
+
+def store_model(model: Classifier, filename: str):
+    with open(filename, "wb") as file:
+        pickle.dump(model, file)
+
+def load_model(filename: str) -> 'Classifier':
+    with open(filename, "rb") as file:
+        model = pickle.load(file)
+    return model
 
 class MeasuresOfQuality:
     def __init__(self, y_pred: np.array, y_true: np.array):

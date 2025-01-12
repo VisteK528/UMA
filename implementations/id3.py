@@ -62,10 +62,6 @@ class DecisionTreeClassifier(Classifier):
         self._classes = None
         self._random_forest_version = random_forest_version
 
-    def _get_probabilities_for_classes(self, classes: np.array) -> np.array:
-        c = Counter(classes)
-        return np.array([c.get(x, 0) / sum(c.values()) for x in self._possible_classes])
-
     @staticmethod
     def get_split_entropy(group_a: Group, group_b: Group) -> float:
         split_entropy = 0
