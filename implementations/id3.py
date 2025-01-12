@@ -1,6 +1,7 @@
 from collections import Counter
+from .classifiers import Classifier
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Union
 
 def entropy_func(class_count: int, num_samples: int) -> float:
     probability = class_count / num_samples
@@ -37,28 +38,33 @@ class Group:
 
 class Node:
     def __init__(self, split_feature=None, split_val=None, depth=None, child_node_a=None, child_node_b=None, val=None):
-        self.split_feature = split_feature
-        self.split_val = split_val
-        self.depth = depth
-        self.child_node_a = child_node_a
-        self.child_node_b = child_node_b
-        self.val = val
+        self._split_feature = split_feature
+        self._depth = depth
+        self._split_val = split_val
+        self._child_node_a = child_node_a
+        self._child_node_b = child_node_b
+        self._val = val
 
     def predict(self, data) -> int:
-        if self.val is not None:
-            return self.val
-        elif data[self.split_feature] >= self.split_val:
-            return self.child_node_a.predict(data)
+        if self._val is not None:
+            return self._val
+        elif data[self._split_feature] >= self._split_val:
+            return self._child_node_a.predict(data)
         else:
-            return self.child_node_b.predict(data)
+            return self._child_node_b.predict(data)
 
 
-class DecisionTreeClassifier(object):
+class DecisionTreeClassifier(Classifier):
     def __init__(self, max_depth, random_forest_version=False):
-        self.depth = 0
-        self.max_depth = max_depth
-        self.tree = None
+        super().__init__()
+        self._max_depth = max_depth
+        self._tree = None
+        self._classes = None
         self._random_forest_version = random_forest_version
+
+    def _get_probabilities_for_classes(self, classes: np.array) -> np.array:
+        c = Counter(classes)
+        return np.array([c.get(x, 0) / sum(c.values()) for x in self._possible_classes])
 
     @staticmethod
     def get_split_entropy(group_a: Group, group_b: Group) -> float:
@@ -121,14 +127,14 @@ class DecisionTreeClassifier(object):
 
         return best_argument, best_split, best_gain
 
-    def build_tree(self, data: np.ndarray, classes: np.ndarray, depth=0) -> 'Node':
-        if depth == self.max_depth or len(set(classes)) == 1:
-            return Node(val=Counter(classes).most_common(1)[0][0])
+    def build_tree(self, data: np.ndarray, classes: np.ndarray, depth=0) -> Union['Node', np.array]:
+        if depth == self._max_depth or len(set(classes)) == 1:
+            return Node(val=self._get_probabilities_for_classes(classes))
 
         best_argument, best_split, best_gain = self.get_best_split(data, classes)
 
         if best_argument is None:
-            return Node(val=Counter(classes).most_common(1)[0][0])
+            return Node(val=self._get_probabilities_for_classes(classes))
 
         child_a_data, child_b_data = split(data, classes, best_argument, best_split)
         child_a_classes = child_a_data[:, -1]
@@ -140,26 +146,11 @@ class DecisionTreeClassifier(object):
         return Node(split_feature=best_argument, split_val=best_split, depth=depth, child_node_a=child_a_node,
                     child_node_b=child_b_node)
 
-    def fit(self, data: np.ndarray, classes: np.ndarray) -> None:
-        self.tree = self.build_tree(data, classes)
+    def fit(self, data: np.array, classes: np.array, **kwargs) -> None:
+        super().fit(data, classes)
+        self._tree = self.build_tree(data, classes)
+        self._trained = True
 
-    def predict(self, data: np.ndarray) -> int:
-        if self.tree is not None:
-            return self.tree.predict(data)
-
-    def evaluate(self, data: np.ndarray, classes: np.ndarray, verbose=0) -> float:
-        if self.tree is not None:
-            samples = len(classes)
-            positively_predicted = 0
-            for i, subdataset in enumerate(zip(data, classes), 1):
-                sample, actual_class = subdataset
-                predicted_class = self.tree.predict(sample)
-                if predicted_class == actual_class:
-                    positively_predicted += 1
-                if verbose == 1:
-                    print(f"Predicting {i:>2}/{samples}\tPrediction: {predicted_class}\tActual class: {actual_class}")
-            accuracy = positively_predicted / samples
-            if verbose == 1:
-                print()
-            print(f"Accuracy after predicting {samples} samples: {accuracy * 100:.2f}%")
-            return accuracy
+    def _predict_sample(self, data: np.array) -> np.array:
+        if self._tree is not None:
+            return self._tree.predict(data)
