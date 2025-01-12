@@ -3,15 +3,16 @@ from .id3 import DecisionTreeClassifier
 from .bayes import NaiveBayes
 from .classifiers import Classifier
 from typing import Tuple
-from collections import Counter
 from joblib import Parallel, delayed
 
 
 class RandomForestClassifier(Classifier):
-    def __init__(self, classifiers_number: int):
+    def __init__(self, classifiers_number: int, **kwargs):
         super().__init__()
         self._classifiers_number = classifiers_number
         self._models = []
+        self._discrete_x = kwargs.get("discrete_x", True)
+        self._discretization_type = kwargs.get("discretization_type", None)
 
     @staticmethod
     def bootstrap(x: np.ndarray, y: np.ndarray) -> Tuple[np.array, np.array]:
@@ -50,9 +51,12 @@ class RandomForestClassifier(Classifier):
         return dc
 
     def _train_naive_bayes(self, x, y):
-        bc = NaiveBayes()
+        if self._discretization_type is not None:
+            bc = NaiveBayes(discretization_type=self._discretization_type)
+        else:
+            bc = NaiveBayes(discretization_type=self._discretization_type)
         x_i, y_i = self.bootstrap(x, y)
-        bc.build_classifier(x_i, y_i, discrete_x=True)
+        bc.fit(x_i, y_i, discrete_x=self._discrete_x)
         return bc
 
     def _predict_sample(self, data: np.array) -> np.array:
