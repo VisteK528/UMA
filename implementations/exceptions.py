@@ -7,3 +7,9 @@ class ModelAlreadyTrainedError(Exception):
 class ModelNotTrainedError(Exception):
     pass
 
+
+class MeasuresOfQualityNotCompiledError(Exception):
+    pass
+
+class ClassNotExistingError(Exception):
+    pass
