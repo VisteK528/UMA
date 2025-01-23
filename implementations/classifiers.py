@@ -1,3 +1,16 @@
+"""
+Filename: classifiers.py
+Authors:
+    Piotr Patek, email: piotr.patek.stud@pw.edu.pl
+    Jan Potaszyński, email: jan.potaszynski.stud@pw.edu.pl
+Date: January 2025
+Version: 1.0
+Description:
+    This file contains Classifier class which is a base class for all classifiers
+     in the package (Random Forest, Naive Bayes and ID3).
+Dependencies: collections, numpy
+"""
+
 import numpy as np
 from collections import Counter
 from .exceptions import ModelAlreadyTrainedError, ModelNotTrainedError

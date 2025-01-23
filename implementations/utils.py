@@ -1,3 +1,16 @@
+"""
+Filename: utils.py
+Authors:
+    Piotr Patek, email: piotr.patek.stud@pw.edu.pl
+    Jan Potaszyński, email: jan.potaszynski.stud@pw.edu.pl
+Date: January 2025
+Version: 1.0
+Description:
+    This file contains MeasuresOfQuality class which is used to calculate such measures as accuracy, error,
+     true positive rate etc. as well as support functions used for import and export of the models.
+Dependencies: numpy, pickle
+"""
+
 import numpy as np
 from .exceptions import ClassNotExistingError, MeasuresOfQualityNotCompiledError
 from .classifiers import Classifier

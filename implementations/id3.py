@@ -1,3 +1,15 @@
+"""
+Filename: id3.py
+Authors:
+    Piotr Patek, email: piotr.patek.stud@pw.edu.pl
+    Jan Potaszyński, email: jan.potaszynski.stud@pw.edu.pl
+Date: January 2025
+Version: 1.0
+Description:
+    This file contains implementation of DecisionTree model class.
+Dependencies: collections, numpy, typing
+"""
+
 from collections import Counter
 from .classifiers import Classifier
 import numpy as np

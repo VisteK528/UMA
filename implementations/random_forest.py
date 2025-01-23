@@ -1,3 +1,15 @@
+"""
+Filename: random_forest.py
+Authors:
+    Piotr Patek, email: piotr.patek.stud@pw.edu.pl
+    Jan Potaszyński, email: jan.potaszynski.stud@pw.edu.pl
+Date: January 2025
+Version: 1.0
+Description:
+    This file contains implementation of RandomForestClassifier model class.
+Dependencies: typing, numpy, joblib
+"""
+
 import numpy as np
 from .id3 import DecisionTreeClassifier
 from .bayes import NaiveBayes
