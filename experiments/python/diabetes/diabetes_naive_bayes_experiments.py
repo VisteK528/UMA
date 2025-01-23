@@ -13,7 +13,6 @@ from implementations.utils import MeasuresOfQuality
 ATTEMPTS = 50
 SAVE_IMAGES = True
 
-
 def ovr_cm(y_true_ovr, y_pred_ovr, selected_class, selected_class_str, attempts, save_fig, roc_filename=None):
     y_true_ovr_filtered = np.array([x[:, selected_class] for x in y_true_ovr]).flatten()
     y_pred_ovr_filtered = np.array([x[:, selected_class] for x in y_pred_ovr]).flatten()
@@ -32,7 +31,7 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
     precision_list = []
     tpr_list = []
     fpr_list = []
-
+    
     tpr_list_0 = []
     fpr_list_0 = []
     auc_list_0 = []
@@ -46,7 +45,7 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
         precision_list.append(measures.precision(1))
         tpr_list.append(measures.true_positive_rate(1))
         fpr_list.append(measures.false_positive_rate(1))
-
+        
         fpr_list_0.append(fpr0)
         tpr_list_0.append(tpr0)
         auc_list_0.append(roc_auc0)
@@ -68,7 +67,7 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
     plt.figure()
     plt.fill_between(mean_fpr0, min_tpr0, max_tpr0, color='blue', alpha=0.2)
     plt.plot(mean_fpr0, mean_tpr0, color='blue', lw=2, label=f'ROC curve (AUC = {mean_auc0:.2f})')
-    plt.plot([0, 1], [0, 1], color='gray', lw=1, linestyle='--')
+    plt.plot([0, 1], [0, 1], color='gray', lw=1, linestyle='--') 
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.legend(loc='lower right')
@@ -76,19 +75,12 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
 
     if save_fig:
         plt.savefig(roc_filename, dpi=300)
-
+        
     return np.array(precision_list), np.array(tpr_list), np.array(fpr_list)
 
-
 if __name__ == "__main__":
-    X = np.genfromtxt("../../../data_processed/credit_score/percentiles/X.csv", dtype=float, delimiter=",")
-    l = len(X[0])
-    xx = np.zeros([X.shape[0], l])
-    for i in range(X.shape[0]):
-        for j in range(l):
-            xx[i, j] = X[i][j]
-    X = xx
-    y = np.loadtxt("../../../data_processed/credit_score/percentiles/y.csv", dtype=float, delimiter=",")
+    X = np.loadtxt("../../../data_processed/diabetes/X.csv", dtype=float, delimiter=",")
+    y = np.loadtxt("../../../data_processed/diabetes/y.csv", dtype=float, delimiter=",")
 
     best_model = None
     best_model_score = 0.0
@@ -98,10 +90,11 @@ if __name__ == "__main__":
     y_true = []
     y_pred = []
 
-    for attempt_rf in range(1, ATTEMPTS + 1):
-        print(f"Attempt: {attempt_rf}")
+    for attempt_nb in range(1, ATTEMPTS+1):
+        print(f"Attempt: {attempt_nb}")
         X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.1)
         kFold = KFold(n_splits=5, shuffle=False)
+
 
         best_model_k_fold = None
         best_score_k_fold = 0.0
@@ -111,18 +104,20 @@ if __name__ == "__main__":
             x_val = X_train[validate_indices]
             y_val = Y_train[validate_indices]
 
-            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=0.5)
+
+            nb = NaiveBayes()
             time1 = time.time()
-            rf.fit(x_train, y_train, discrete_x=True)
+            nb.fit(x_train, y_train, discrete_x=True)
             print(f"Training took: {time.time() - time1:.3f} s")
-            acc = rf.evaluate(x_val, y_val)
+            acc = nb.evaluate(x_val, y_val)
 
             if acc > best_score_k_fold:
-                best_model_k_fold = rf
+                best_model_k_fold = nb
                 best_score_k_fold = acc
 
+
         # Evaluate best model on test data
-        print(f"Best model accuracy on validation data: {best_score_k_fold * 100:.2f}")
+        print(f"Best model accuracy on validation data: {best_score_k_fold*100:.2f}")
         best_k_fold_accuracy = best_model_k_fold.evaluate(X_test, Y_test)
         accuracies.append(best_k_fold_accuracy)
 
@@ -134,14 +129,15 @@ if __name__ == "__main__":
             worst_model = best_model_k_fold
             worst_model_score = best_k_fold_accuracy
 
+
         # Make predictions
         y_true.append(Y_test)
         y_pred.append(np.argmax(best_model_k_fold.predict(X_test), axis=1))
 
+
     print(f"Accuracies")
     accuracies = np.array(accuracies) * 100
-    print(
-        f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}")
+    print(f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}")
 
     cm = confusion_matrix(np.array(y_true).flatten(), np.array(y_pred).flatten(), labels=[0, 1, 2])
     cm = cm // ATTEMPTS
@@ -150,57 +146,49 @@ if __name__ == "__main__":
     disp.plot(cmap=plt.cm.Blues)
 
     if SAVE_IMAGES:
-        plt.savefig("images/credit_score_forest_id3_bayes_cm.pdf")
+        plt.savefig("images/diabetes_naive_bayes_cm.pdf")
+
 
     encoder = LabelBinarizer()
     y_true_ovr = [encoder.fit_transform(x) for x in y_true]
     y_pred_ovr = [encoder.fit_transform(x) for x in y_pred]
 
     # 0 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=0.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_naive_bayes_cm_class=0.pdf")
 
     precision_list_0, tpr_list_0, fpr_list_0 = ovr_test(y_true_ovr, y_pred_ovr, 0, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=0.pdf")
+                                                        "images/diabetes_naive_bayes_roc_class=0.pdf")
 
     print("\nPrecision for 0 vs rest")
-    print(
-        f"Max: {np.max(precision_list_0):.2f}\tMin: {np.min(precision_list_0):.2f}\tMean: {np.mean(precision_list_0):.2f}\tStd dev: {np.std(precision_list_0):.2f}")
+    print(f"Max: {np.max(precision_list_0):.2f}\tMin: {np.min(precision_list_0):.2f}\tMean: {np.mean(precision_list_0):.2f}\tStd dev: {np.std(precision_list_0):.2f}")
     print("True positive rate for 0 vs rest")
-    print(
-        f"Max: {np.max(tpr_list_0):.2f}\tMin: {np.min(tpr_list_0):.2f}\tMean: {np.mean(tpr_list_0):.2f}\tStd dev: {np.std(tpr_list_0):.2f}")
+    print(f"Max: {np.max(tpr_list_0):.2f}\tMin: {np.min(tpr_list_0):.2f}\tMean: {np.mean(tpr_list_0):.2f}\tStd dev: {np.std(tpr_list_0):.2f}")
     print("False positive rate for 0 vs rest")
-    print(
-        f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}")
+    print(f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}")
+
 
     # 1 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=1.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_naive_bayes_cm_class=1.pdf")
 
     precision_list_1, tpr_list_1, fpr_list_1 = ovr_test(y_true_ovr, y_pred_ovr, 1, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=1.pdf")
+                                                        "images/diabetes_naive_bayes_roc_class=1.pdf")
 
     print("\nPrecision for 1 vs rest")
-    print(
-        f"Max: {np.max(precision_list_1):.2f}\tMin: {np.min(precision_list_1):.2f}\tMean: {np.mean(precision_list_1):.2f}\tStd dev: {np.std(precision_list_1):.2f}")
+    print(f"Max: {np.max(precision_list_1):.2f}\tMin: {np.min(precision_list_1):.2f}\tMean: {np.mean(precision_list_1):.2f}\tStd dev: {np.std(precision_list_1):.2f}")
     print("True positive rate for 1 vs rest")
-    print(
-        f"Max: {np.max(tpr_list_1):.2f}\tMin: {np.min(tpr_list_1):.2f}\tMean: {np.mean(tpr_list_1):.2f}\tStd dev: {np.std(tpr_list_1):.2f}")
+    print(f"Max: {np.max(tpr_list_1):.2f}\tMin: {np.min(tpr_list_1):.2f}\tMean: {np.mean(tpr_list_1):.2f}\tStd dev: {np.std(tpr_list_1):.2f}")
     print("False positive rate for 1 vs rest")
-    print(
-        f"Max: {np.max(fpr_list_1):.2f}\tMin: {np.min(fpr_list_1):.2f}\tMean: {np.mean(fpr_list_1):.2f}\tStd dev: {np.std(fpr_list_1):.2f}")
+    print(f"Max: {np.max(fpr_list_1):.2f}\tMin: {np.min(fpr_list_1):.2f}\tMean: {np.mean(fpr_list_1):.2f}\tStd dev: {np.std(fpr_list_1):.2f}")
 
     # 2 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 2, "inconclusive", ATTEMPTS, SAVE_IMAGES,
-           "images/credit_score_forest_id3_bayes_cm_class=2.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 2, "inconclusive", ATTEMPTS, SAVE_IMAGES, "images/diabetes_naive_bayes_cm_class=2.pdf")
 
     precision_list_2, tpr_list_2, fpr_list_2 = ovr_test(y_true_ovr, y_pred_ovr, 2, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=2.pdf")
+                                                        "images/diabetes_naive_bayes_roc_class=2.pdf")
 
     print("\nPrecision for 2 vs rest")
-    print(
-        f"Max: {np.max(precision_list_2):.2f}\tMin: {np.min(precision_list_2):.2f}\tMean: {np.mean(precision_list_2):.2f}\tStd dev: {np.std(precision_list_2):.2f}")
+    print(f"Max: {np.max(precision_list_2):.2f}\tMin: {np.min(precision_list_2):.2f}\tMean: {np.mean(precision_list_2):.2f}\tStd dev: {np.std(precision_list_2):.2f}")
     print("True positive rate for 2 vs rest")
-    print(
-        f"Max: {np.max(tpr_list_2):.2f}\tMin: {np.min(tpr_list_2):.2f}\tMean: {np.mean(tpr_list_2):.2f}\tStd dev: {np.std(tpr_list_2):.2f}")
+    print(f"Max: {np.max(tpr_list_2):.2f}\tMin: {np.min(tpr_list_2):.2f}\tMean: {np.mean(tpr_list_2):.2f}\tStd dev: {np.std(tpr_list_2):.2f}")
     print("False positive rate for 2 vs rest")
-    print(
-        f"Max: {np.max(fpr_list_2):.2f}\tMin: {np.min(fpr_list_2):.2f}\tMean: {np.mean(fpr_list_2):.2f}\tStd dev: {np.std(fpr_list_2):.2f}")
+    print(f"Max: {np.max(fpr_list_2):.2f}\tMin: {np.min(fpr_list_2):.2f}\tMean: {np.mean(fpr_list_2):.2f}\tStd dev: {np.std(fpr_list_2):.2f}")

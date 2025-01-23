@@ -8,11 +8,12 @@ from sklearn.model_selection import KFold
 
 from implementations.bayes import NaiveBayes
 from implementations.random_forest import RandomForestClassifier
+from implementations.id3 import DecisionTreeClassifier
 from implementations.utils import MeasuresOfQuality
 
 ATTEMPTS = 50
 SAVE_IMAGES = True
-
+DEPTH = 10
 
 def ovr_cm(y_true_ovr, y_pred_ovr, selected_class, selected_class_str, attempts, save_fig, roc_filename=None):
     y_true_ovr_filtered = np.array([x[:, selected_class] for x in y_true_ovr]).flatten()
@@ -81,14 +82,8 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
 
 
 if __name__ == "__main__":
-    X = np.genfromtxt("../../../data_processed/credit_score/percentiles/X.csv", dtype=float, delimiter=",")
-    l = len(X[0])
-    xx = np.zeros([X.shape[0], l])
-    for i in range(X.shape[0]):
-        for j in range(l):
-            xx[i, j] = X[i][j]
-    X = xx
-    y = np.loadtxt("../../../data_processed/credit_score/percentiles/y.csv", dtype=float, delimiter=",")
+    X = np.loadtxt("../../../data_processed/diabetes/X.csv", dtype=float, delimiter=",")
+    y = np.loadtxt("../../../data_processed/diabetes/y.csv", dtype=float, delimiter=",")
 
     best_model = None
     best_model_score = 0.0
@@ -98,8 +93,8 @@ if __name__ == "__main__":
     y_true = []
     y_pred = []
 
-    for attempt_rf in range(1, ATTEMPTS + 1):
-        print(f"Attempt: {attempt_rf}")
+    for attempt_id in range(1, ATTEMPTS + 1):
+        print(f"Attempt: {attempt_id}")
         X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.1)
         kFold = KFold(n_splits=5, shuffle=False)
 
@@ -111,14 +106,14 @@ if __name__ == "__main__":
             x_val = X_train[validate_indices]
             y_val = Y_train[validate_indices]
 
-            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=0.5)
+            id = DecisionTreeClassifier(DEPTH)
             time1 = time.time()
-            rf.fit(x_train, y_train, discrete_x=True)
+            id.fit(x_train, y_train, discrete_x=True)
             print(f"Training took: {time.time() - time1:.3f} s")
-            acc = rf.evaluate(x_val, y_val)
+            acc = id.evaluate(x_val, y_val)
 
             if acc > best_score_k_fold:
-                best_model_k_fold = rf
+                best_model_k_fold = id
                 best_score_k_fold = acc
 
         # Evaluate best model on test data
@@ -150,17 +145,17 @@ if __name__ == "__main__":
     disp.plot(cmap=plt.cm.Blues)
 
     if SAVE_IMAGES:
-        plt.savefig("images/credit_score_forest_id3_bayes_cm.pdf")
+        plt.savefig("images/diabetes_id3_cm.pdf")
 
     encoder = LabelBinarizer()
     y_true_ovr = [encoder.fit_transform(x) for x in y_true]
     y_pred_ovr = [encoder.fit_transform(x) for x in y_pred]
 
     # 0 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=0.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_id3_cm_class=0.pdf")
 
     precision_list_0, tpr_list_0, fpr_list_0 = ovr_test(y_true_ovr, y_pred_ovr, 0, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=0.pdf")
+                                                        "images/diabetes_id3_roc_class=0.pdf")
 
     print("\nPrecision for 0 vs rest")
     print(
@@ -173,10 +168,10 @@ if __name__ == "__main__":
         f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}")
 
     # 1 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=1.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_id3_cm_class=1.pdf")
 
     precision_list_1, tpr_list_1, fpr_list_1 = ovr_test(y_true_ovr, y_pred_ovr, 1, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=1.pdf")
+                                                        "images/diabetes_id3_roc_class=1.pdf")
 
     print("\nPrecision for 1 vs rest")
     print(
@@ -190,10 +185,10 @@ if __name__ == "__main__":
 
     # 2 vs rest
     ovr_cm(y_true_ovr, y_pred_ovr, 2, "inconclusive", ATTEMPTS, SAVE_IMAGES,
-           "images/credit_score_forest_id3_bayes_cm_class=2.pdf")
+           "images/diabetes_id3_cm_class=2.pdf")
 
     precision_list_2, tpr_list_2, fpr_list_2 = ovr_test(y_true_ovr, y_pred_ovr, 2, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=2.pdf")
+                                                        "images/diabetes_id3_roc_class=2.pdf")
 
     print("\nPrecision for 2 vs rest")
     print(

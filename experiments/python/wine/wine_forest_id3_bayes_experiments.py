@@ -105,7 +105,7 @@ if __name__ == "__main__":
             x_val = X_train[validate_indices]
             y_val = Y_train[validate_indices]
 
-            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=1.0)
+            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=0.5)
             time1 = time.time()
             rf.fit(x_train, y_train, discrete_x=True)
             print(f"Training took: {time.time() - time1:.3f} s")

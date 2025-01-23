@@ -81,14 +81,8 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
 
 
 if __name__ == "__main__":
-    X = np.genfromtxt("../../../data_processed/credit_score/percentiles/X.csv", dtype=float, delimiter=",")
-    l = len(X[0])
-    xx = np.zeros([X.shape[0], l])
-    for i in range(X.shape[0]):
-        for j in range(l):
-            xx[i, j] = X[i][j]
-    X = xx
-    y = np.loadtxt("../../../data_processed/credit_score/percentiles/y.csv", dtype=float, delimiter=",")
+    X = np.loadtxt("../../../data_processed/diabetes/X.csv", dtype=float, delimiter=",")
+    y = np.loadtxt("../../../data_processed/diabetes/y.csv", dtype=float, delimiter=",")
 
     best_model = None
     best_model_score = 0.0
@@ -111,7 +105,7 @@ if __name__ == "__main__":
             x_val = X_train[validate_indices]
             y_val = Y_train[validate_indices]
 
-            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=0.5)
+            rf = RandomForestClassifier(classifiers_number=50, tree_percentage=1.0)
             time1 = time.time()
             rf.fit(x_train, y_train, discrete_x=True)
             print(f"Training took: {time.time() - time1:.3f} s")
@@ -150,17 +144,17 @@ if __name__ == "__main__":
     disp.plot(cmap=plt.cm.Blues)
 
     if SAVE_IMAGES:
-        plt.savefig("images/credit_score_forest_id3_bayes_cm.pdf")
+        plt.savefig("images/diabetes_forest_id3_cm.pdf")
 
     encoder = LabelBinarizer()
     y_true_ovr = [encoder.fit_transform(x) for x in y_true]
     y_pred_ovr = [encoder.fit_transform(x) for x in y_pred]
 
     # 0 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=0.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 0, "abnormal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_forest_id3_cm_class=0.pdf")
 
     precision_list_0, tpr_list_0, fpr_list_0 = ovr_test(y_true_ovr, y_pred_ovr, 0, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=0.pdf")
+                                                        "images/diabetes_forest_id3_roc_class=0.pdf")
 
     print("\nPrecision for 0 vs rest")
     print(
@@ -173,10 +167,10 @@ if __name__ == "__main__":
         f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}")
 
     # 1 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/credit_score_forest_id3_bayes_cm_class=1.pdf")
+    ovr_cm(y_true_ovr, y_pred_ovr, 1, "normal", ATTEMPTS, SAVE_IMAGES, "images/diabetes_forest_id3_cm_class=1.pdf")
 
     precision_list_1, tpr_list_1, fpr_list_1 = ovr_test(y_true_ovr, y_pred_ovr, 1, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=1.pdf")
+                                                        "images/diabetes_forest_id3_roc_class=1.pdf")
 
     print("\nPrecision for 1 vs rest")
     print(
@@ -190,10 +184,10 @@ if __name__ == "__main__":
 
     # 2 vs rest
     ovr_cm(y_true_ovr, y_pred_ovr, 2, "inconclusive", ATTEMPTS, SAVE_IMAGES,
-           "images/credit_score_forest_id3_bayes_cm_class=2.pdf")
+           "images/diabetes_forest_id3_cm_class=2.pdf")
 
     precision_list_2, tpr_list_2, fpr_list_2 = ovr_test(y_true_ovr, y_pred_ovr, 2, SAVE_IMAGES,
-                                                        "images/credit_score_forest_id3_bayes_roc_class=2.pdf")
+                                                        "images/diabetes_forest_id3_roc_class=2.pdf")
 
     print("\nPrecision for 2 vs rest")
     print(
