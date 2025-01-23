@@ -19,9 +19,10 @@ from joblib import Parallel, delayed
 
 
 class RandomForestClassifier(Classifier):
-    def __init__(self, classifiers_number: int, **kwargs):
+    def __init__(self, classifiers_number: int, tree_percentage=1.0, **kwargs):
         super().__init__()
         self._classifiers_number = classifiers_number
+        self._tree_percentage = tree_percentage
         self._models = []
         self._discrete_x = kwargs.get("discrete_x", True)
         self._discretization_type = kwargs.get("discretization_type", None)
@@ -43,8 +44,7 @@ class RandomForestClassifier(Classifier):
     def fit(self, data: np.array, classes: np.array, **kwargs) -> None:
         super().fit(data, classes)
 
-        tree_percentage = kwargs.get("tree_percentage", 1.0)
-        trees_number = int(tree_percentage * self._classifiers_number)
+        trees_number = int(self._tree_percentage * self._classifiers_number)
 
         self._models.extend(
             Parallel(n_jobs=-1)(delayed(self._train_tree)(data, classes) for _ in range(trees_number))
