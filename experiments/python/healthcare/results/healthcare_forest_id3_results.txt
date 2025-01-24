@@ -1,0 +1,25 @@
+ATTEMPTS:
+
+Accuracies
+Max: 44.13	Min: 40.52	Mean: 42.11	Std dev: 0.80
+
+Precision for 0 vs rest
+Max: 0.53	Min: 0.47	Mean: 0.51	Std dev: 0.01
+True positive rate for 0 vs rest
+Max: 0.42	Min: 0.38	Mean: 0.41	Std dev: 0.01
+False positive rate for 0 vs rest
+Max: 0.30	Min: 0.27	Mean: 0.28	Std dev: 0.01
+
+Precision for 1 vs rest
+Max: 0.45	Min: 0.39	Mean: 0.41	Std dev: 0.01
+True positive rate for 1 vs rest
+Max: 0.44	Min: 0.40	Mean: 0.42	Std dev: 0.01
+False positive rate for 1 vs rest
+Max: 0.31	Min: 0.27	Mean: 0.29	Std dev: 0.01
+
+Precision for 2 vs rest
+Max: 0.37	Min: 0.31	Mean: 0.34	Std dev: 0.01
+True positive rate for 2 vs rest
+Max: 0.48	Min: 0.42	Mean: 0.45	Std dev: 0.01
+False positive rate for 2 vs rest
+Max: 0.30	Min: 0.28	Mean: 0.29	Std dev: 0.01

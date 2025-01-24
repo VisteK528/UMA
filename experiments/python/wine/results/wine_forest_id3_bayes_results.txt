@@ -1,0 +1,12 @@
+ATTEMPTS=25
+Accuracies -> train dataset
+Max: 84.37	Min: 82.90	Mean: 83.73	Std dev: 0.38
+Accuracies -> test dataset
+Max: 79.38	Min: 73.23	Mean: 76.10	Std dev: 1.48
+
+Precision
+Max: 0.82	Min: 0.75	Mean: 0.80	Std dev: 0.02
+True positive rate
+Max: 0.86	Min: 0.77	Mean: 0.82	Std dev: 0.02
+False positive rate
+Max: 0.39	Min: 0.29	Mean: 0.33	Std dev: 0.03

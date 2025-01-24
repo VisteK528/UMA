@@ -23,18 +23,17 @@ def assign_bin(value, edges):
 
 
 class NaiveBayes(Classifier):
-    def __init__(self, discretization_type=None):
+    def __init__(self, discrete_x=False, discretization_type=None):
         super().__init__()
         self._priors = {}
         self._likelihoods = {}
         self._discrete_intervals = []
-        self._discrete_x = False
+        self._discrete_x = discrete_x
         self._discretization_type = discretization_type
 
     def fit(self, data: np.array, classes: np.array, **kwargs) -> None:
         super().fit(data, classes, **kwargs)
-        
-        self._discrete_x = kwargs.get('discrete_x', False)
+
         if not self._discrete_x:
             if self._discretization_type == "percentile":
                 data = self._percentile_discretization(data)
