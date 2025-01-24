@@ -1,6 +1,6 @@
 import numpy as np
-from implementations.id3 import DecisionTreeClassifier
-from implementations.experiments_utils import run_tests, evaluate_multiclass_tests
+from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
+from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_multiclass_tests
 
 DEPTH = 10
 ATTEMPTS = 25

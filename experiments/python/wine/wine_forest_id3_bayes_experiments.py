@@ -1,9 +1,9 @@
 import numpy as np
-from implementations.random_forest import RandomForestClassifier
-from implementations.experiments_utils import run_tests, evaluate_binary_tests
+from uma24z_nbc_random_forest.random_forest import RandomForestClassifier
+from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_binary_tests
 
 ATTEMPTS = 25
-SAVE_IMAGES = True0
+SAVE_IMAGES = True
 
 if __name__ == "__main__":
     X = np.loadtxt("../../../data_processed/wine/simple_processing/X.csv", dtype=float, delimiter=",")

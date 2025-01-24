@@ -1,6 +1,6 @@
 import numpy as np
-from implementations.random_forest import RandomForestClassifier
-from implementations.experiments_utils import run_tests, evaluate_binary_tests
+from uma24z_nbc_random_forest.random_forest import RandomForestClassifier
+from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_binary_tests
 
 ATTEMPTS = 25
 SAVE_IMAGES = True

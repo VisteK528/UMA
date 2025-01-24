@@ -3,7 +3,7 @@ import time
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from sklearn.model_selection import KFold
-from implementations.id3 import DecisionTreeClassifier
+from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
 
 
 

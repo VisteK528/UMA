@@ -1,6 +1,6 @@
 import numpy as np
-from implementations.bayes import NaiveBayes
-from implementations.experiments_utils import run_tests, evaluate_binary_tests
+from uma24z_nbc_random_forest.bayes import NaiveBayes
+from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_binary_tests
 
 ATTEMPTS = 50
 SAVE_IMAGES = True

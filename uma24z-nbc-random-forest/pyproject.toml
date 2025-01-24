@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "uma24z-nbc-random-forest"
+version = "1.0.0"
+license = "MIT"
+description = "Package containing machine learning models implementations for Machine Learning Course at Warsaw University of Technology"
+authors = ["Piotr Patek <piotr.patek.stud@pw.edu.pl>", "Jan Potaszyński <jan.potaszynski.stud@pw.edu.pl>"]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [
+    { include = "uma24z_nbc_random_forest" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+numpy = ">=1.2"
+scikit-learn  = ">=1.5.1"
+pytest = ">=6.2.5"
+matplotlib = ">=3.9.0"
+joblib = ">=1.4.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"

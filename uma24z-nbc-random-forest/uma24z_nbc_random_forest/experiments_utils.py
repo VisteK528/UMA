@@ -4,8 +4,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from implementations.utils import MeasuresOfQuality
-from implementations.classifiers import Classifier
+from .utils import MeasuresOfQuality
+from .classifiers import Classifier
 import time
 from sklearn.preprocessing import LabelBinarizer
 
