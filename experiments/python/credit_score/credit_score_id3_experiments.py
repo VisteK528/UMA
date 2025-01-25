@@ -2,7 +2,7 @@ import numpy as np
 from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
 from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_multiclass_tests
 
-DEPTH = 10
+DEPTH = 8
 ATTEMPTS = 25
 SAVE_IMAGES = True
 

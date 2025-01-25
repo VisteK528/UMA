@@ -11,10 +11,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 
 def ovr_cm(y_true_ovr, y_pred_ovr, selected_class, selected_class_str, attempts, save_fig, roc_filename=None):
-    y_true_ovr_filtered = np.array([x[:, selected_class] for x in y_true_ovr]).flatten()
-    y_pred_ovr_filtered = np.array([x[:, selected_class] for x in y_pred_ovr]).flatten()
-
-    cm = confusion_matrix(y_true_ovr_filtered, y_pred_ovr_filtered, labels=[0, 1])
+    cm = confusion_matrix(y_true_ovr.flatten(), y_pred_ovr.flatten(), labels=[0, 1])
     cm = cm // attempts
     disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                                   display_labels=["other", selected_class_str])
@@ -34,10 +31,10 @@ def ovr_test(y_true_ovr, y_pred_ovr, selected_class, save_fig, roc_filename=None
     auc_list_0 = []
 
     for y_true_ovr_batch, y_pred_ovr_batch in zip(y_true_ovr, y_pred_ovr):
-        fpr0, tpr0, _ = roc_curve(y_true_ovr_batch[:, selected_class], y_pred_ovr_batch[:, selected_class])
+        fpr0, tpr0, _ = roc_curve(y_true_ovr_batch, y_pred_ovr_batch[:, selected_class])
         roc_auc0 = auc(fpr0, tpr0)
 
-        measures = MeasuresOfQuality(y_pred_ovr_batch[:, selected_class], y_true_ovr_batch[:, selected_class])
+        measures = MeasuresOfQuality(y_pred_ovr_batch, y_true_ovr_batch)
         measures.compile()
         precision_list.append(measures.precision(1))
         tpr_list.append(measures.true_positive_rate(1))
@@ -138,26 +135,27 @@ def run_tests(X: np.array, Y: np.array, attempts: int, model: Classifier, verbos
 
         # Make predictions
         y_true.append(Y_test)
-        y_pred_test.append(np.argmax(best_model_k_fold.predict(X_test), axis=1))
+        y_pred_test.append(best_model_k_fold.predict(X_test))
 
         y_true_train.append(Y_train)
-        y_pred_train.append(np.argmax(best_model_k_fold.predict(X_train), axis=1))
+        y_pred_train.append(best_model_k_fold.predict(X_train))
         
     return y_true, y_pred_test, y_true_train, y_pred_train, accuracies, train_accuracies, best_model, worst_model
 
 
-def evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, attempts, save_images, dataset_name_str, classifier_type_str, classes_names_str):
+def evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, attempts, save_images, save_report, dataset_name_str, classifier_type_str, classes_names_str):
     base_filename = f"images/{dataset_name_str}_{classifier_type_str}"
 
-    print(f"\nAccuracies -> train dataset")
     train_accuracies = np.array(train_accuracies) * 100
-    print(f"Max: {np.max(train_accuracies):.2f}\tMin: {np.min(train_accuracies):.2f}\tMean: {np.mean(train_accuracies):.2f}\tStd dev: {np.std(train_accuracies):.2f}")
-
-    print(f"Accuracies -> test dataset")
     accuracies = np.array(test_accuracies) * 100
-    print(f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}")
 
-    cm = confusion_matrix(np.array(y_true_test).flatten(), np.array(y_pred_test).flatten(), labels=[0, 1, 2])
+    summary = f"ATTEMPTS={attempts}\n"
+    summary += "Accuracies -> train dataset\n"
+    summary += f"Max: {np.max(train_accuracies):.2f}\tMin: {np.min(train_accuracies):.2f}\tMean: {np.mean(train_accuracies):.2f}\tStd dev: {np.std(train_accuracies):.2f}\n"
+    summary += "Accuracies -> test dataset\n"
+    summary += f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}\n"
+
+    cm = confusion_matrix(np.array(y_true_test).flatten(), np.argmax(np.array(y_pred_test), axis=2).flatten(), labels=[0, 1, 2])
     cm = cm // attempts
     disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                                   display_labels=classes_names_str)
@@ -167,65 +165,78 @@ def evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_a
         plt.savefig(f"{base_filename}_cm.pdf", bbox_inches = "tight", dpi=300)
 
     encoder = LabelBinarizer()
-    y_true_ovr = [encoder.fit_transform(x) for x in y_true_test]
-    y_pred_ovr = [encoder.fit_transform(x) for x in y_pred_test]
+    y_true_ovr = np.array([encoder.fit_transform(x) for x in y_true_test])
+    y_pred_ovr = np.array([encoder.fit_transform(x) for x in np.argmax(y_pred_test, axis=2)])
 
     # 0 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 0, classes_names_str[0], attempts, save_images, f"{base_filename}_cm_class=0.pdf")
+    ovr_cm(y_true_ovr[:, :, 0], y_pred_ovr[:, :, 0], 0, classes_names_str[0], attempts, save_images, f"{base_filename}_cm_class=0.pdf")
 
-    precision_list_0, tpr_list_0, fpr_list_0 = ovr_test(y_true_ovr, y_pred_ovr, 0, save_images,
+    precision_list_0, tpr_list_0, fpr_list_0 = ovr_test(y_true_ovr[:, :, 0], y_pred_test, 0, save_images,
                                                         f"{base_filename}_roc_class=0.pdf")
 
-    print("\nPrecision for 0 vs rest")
-    print(f"Max: {np.max(precision_list_0):.2f}\tMin: {np.min(precision_list_0):.2f}\tMean: {np.mean(precision_list_0):.2f}\tStd dev: {np.std(precision_list_0):.2f}")
-    print("True positive rate for 0 vs rest")
-    print(f"Max: {np.max(tpr_list_0):.2f}\tMin: {np.min(tpr_list_0):.2f}\tMean: {np.mean(tpr_list_0):.2f}\tStd dev: {np.std(tpr_list_0):.2f}")
-    print("False positive rate for 0 vs rest")
-    print(f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}")
+    summary += "\n\n"
+    summary += "Precision 0 vs rest\n"
+    summary += f"Max: {np.max(precision_list_0):.2f}\tMin: {np.min(precision_list_0):.2f}\tMean: {np.mean(precision_list_0):.2f}\tStd dev: {np.std(precision_list_0):.2f}\n"
+    summary += "True positive rate\n"
+    summary += f"Max: {np.max(tpr_list_0):.2f}\tMin: {np.min(tpr_list_0):.2f}\tMean: {np.mean(tpr_list_0):.2f}\tStd dev: {np.std(tpr_list_0):.2f}\n"
+    summary += "False positive rate\n"
+    summary += f"Max: {np.max(fpr_list_0):.2f}\tMin: {np.min(fpr_list_0):.2f}\tMean: {np.mean(fpr_list_0):.2f}\tStd dev: {np.std(fpr_list_0):.2f}\n"
 
     # 1 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 1, classes_names_str[1], attempts, save_images, f"{base_filename}_cm_class=1.pdf")
+    ovr_cm(y_true_ovr[:, :, 1], y_pred_ovr[:, :, 1], 1, classes_names_str[1], attempts, save_images, f"{base_filename}_cm_class=1.pdf")
 
-    precision_list_1, tpr_list_1, fpr_list_1 = ovr_test(y_true_ovr, y_pred_ovr, 1, save_images,
+    precision_list_1, tpr_list_1, fpr_list_1 = ovr_test(y_true_ovr[:, :, 1], y_pred_test, 1, save_images,
                                                         f"{base_filename}_roc_class=1.pdf")
 
-    print("\nPrecision for 1 vs rest")
-    print(f"Max: {np.max(precision_list_1):.2f}\tMin: {np.min(precision_list_1):.2f}\tMean: {np.mean(precision_list_1):.2f}\tStd dev: {np.std(precision_list_1):.2f}")
-    print("True positive rate for 1 vs rest")
-    print(f"Max: {np.max(tpr_list_1):.2f}\tMin: {np.min(tpr_list_1):.2f}\tMean: {np.mean(tpr_list_1):.2f}\tStd dev: {np.std(tpr_list_1):.2f}")
-    print("False positive rate for 1 vs rest")
-    print(f"Max: {np.max(fpr_list_1):.2f}\tMin: {np.min(fpr_list_1):.2f}\tMean: {np.mean(fpr_list_1):.2f}\tStd dev: {np.std(fpr_list_1):.2f}")
+    summary += "\n\n"
+    summary += "Precision 1 vs rest\n"
+    summary += f"Max: {np.max(precision_list_1):.2f}\tMin: {np.min(precision_list_1):.2f}\tMean: {np.mean(precision_list_1):.2f}\tStd dev: {np.std(precision_list_1):.2f}\n"
+    summary += "True positive rate\n"
+    summary += f"Max: {np.max(tpr_list_1):.2f}\tMin: {np.min(tpr_list_1):.2f}\tMean: {np.mean(tpr_list_1):.2f}\tStd dev: {np.std(tpr_list_1):.2f}\n"
+    summary += "False positive rate\n"
+    summary += f"Max: {np.max(fpr_list_1):.2f}\tMin: {np.min(fpr_list_1):.2f}\tMean: {np.mean(fpr_list_1):.2f}\tStd dev: {np.std(fpr_list_1):.2f}\n"
 
     # 2 vs rest
-    ovr_cm(y_true_ovr, y_pred_ovr, 2, classes_names_str[2], attempts, save_images,
+    ovr_cm(y_true_ovr[:, :, 2], y_pred_ovr[:, :, 2], 2, classes_names_str[2], attempts, save_images,
            f"{base_filename}_cm_class=2.pdf")
 
-    precision_list_2, tpr_list_2, fpr_list_2 = ovr_test(y_true_ovr, y_pred_ovr, 2, save_images,
+    precision_list_2, tpr_list_2, fpr_list_2 = ovr_test(y_true_ovr[:, :, 2], y_pred_test, 2, save_images,
                                                         f"{base_filename}_roc_class=2.pdf")
 
-    print("\nPrecision for 2 vs rest")
-    print(f"Max: {np.max(precision_list_2):.2f}\tMin: {np.min(precision_list_2):.2f}\tMean: {np.mean(precision_list_2):.2f}\tStd dev: {np.std(precision_list_2):.2f}")
-    print("True positive rate for 2 vs rest")
-    print(f"Max: {np.max(tpr_list_2):.2f}\tMin: {np.min(tpr_list_2):.2f}\tMean: {np.mean(tpr_list_2):.2f}\tStd dev: {np.std(tpr_list_2):.2f}")
-    print("False positive rate for 2 vs rest")
-    print(f"Max: {np.max(fpr_list_2):.2f}\tMin: {np.min(fpr_list_2):.2f}\tMean: {np.mean(fpr_list_2):.2f}\tStd dev: {np.std(fpr_list_2):.2f}")
+    summary += "\n\n"
+    summary += "Precision 2 vs rest\n"
+    summary += f"Max: {np.max(precision_list_2):.2f}\tMin: {np.min(precision_list_2):.2f}\tMean: {np.mean(precision_list_2):.2f}\tStd dev: {np.std(precision_list_2):.2f}\n"
+    summary += "True positive rate\n"
+    summary += f"Max: {np.max(tpr_list_2):.2f}\tMin: {np.min(tpr_list_2):.2f}\tMean: {np.mean(tpr_list_2):.2f}\tStd dev: {np.std(tpr_list_2):.2f}\n"
+    summary += "False positive rate\n"
+    summary += f"Max: {np.max(fpr_list_2):.2f}\tMin: {np.min(fpr_list_2):.2f}\tMean: {np.mean(fpr_list_2):.2f}\tStd dev: {np.std(fpr_list_2):.2f}\n"
+
+    print(summary)
+
+    if save_report:
+        with open(f"results/{dataset_name_str}_{classifier_type_str}_results.txt", "w") as file:
+            file.writelines(summary)
+            file.close()
 
 
-def evaluate_binary_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, attempts, save_images, dataset_name_str, classifier_type_str, classes_names_str):
+def evaluate_binary_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, attempts, save_images, save_report, dataset_name_str, classifier_type_str, classes_names_str):
     base_filename = f"images/{dataset_name_str}_{classifier_type_str}"
 
-    print(f"\nAccuracies -> train dataset")
     train_accuracies = np.array(train_accuracies) * 100
-    print(f"Max: {np.max(train_accuracies):.2f}\tMin: {np.min(train_accuracies):.2f}\tMean: {np.mean(train_accuracies):.2f}\tStd dev: {np.std(train_accuracies):.2f}")
-
-    print(f"Accuracies -> test dataset")
     accuracies = np.array(test_accuracies) * 100
-    print(f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}")
+
+    summary = f"ATTEMPTS={attempts}\n"
+    summary += "Accuracies -> train dataset\n"
+    summary += f"Max: {np.max(train_accuracies):.2f}\tMin: {np.min(train_accuracies):.2f}\tMean: {np.mean(train_accuracies):.2f}\tStd dev: {np.std(train_accuracies):.2f}\n"
+    summary += "Accuracies -> test dataset\n"
+    summary += f"Max: {np.max(accuracies):.2f}\tMin: {np.min(accuracies):.2f}\tMean: {np.mean(accuracies):.2f}\tStd dev: {np.std(accuracies):.2f}\n"
+
 
     y_true_test = np.array(y_true_test)
     y_pred_test = np.array(y_pred_test)
 
-    cm = confusion_matrix(y_true_test.flatten(), y_pred_test.flatten(), labels=[0, 1])
+
+    cm = confusion_matrix(y_true_test.flatten(), np.argmax(y_pred_test, axis=2).flatten(), labels=[0, 1])
     cm = cm // attempts
     disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                                   display_labels=classes_names_str)
@@ -234,16 +245,22 @@ def evaluate_binary_tests(y_true_test, y_pred_test, test_accuracies, train_accur
     if save_images:
         plt.savefig(f"{base_filename}_cm.pdf")
 
-    y_true_test = y_true_test.reshape(y_true_test.shape[0], y_true_test.shape[1], 1)
-    y_pred_test = y_pred_test.reshape(y_pred_test.shape[0], y_pred_test.shape[1], 1)
 
-    precision_list, tpr_list, fpr_list = ovr_test(y_true_test, y_pred_test, 0, save_images,
+    precision_list, tpr_list, fpr_list = ovr_test(y_true_test, y_pred_test, 1, save_images,
                                                         f"{base_filename}_roc.pdf")
 
-    print("\nPrecision")
-    print(f"Max: {np.max(precision_list):.2f}\tMin: {np.min(precision_list):.2f}\tMean: {np.mean(precision_list):.2f}\tStd dev: {np.std(precision_list):.2f}")
-    print("True positive rate")
-    print(f"Max: {np.max(tpr_list):.2f}\tMin: {np.min(tpr_list):.2f}\tMean: {np.mean(tpr_list):.2f}\tStd dev: {np.std(tpr_list):.2f}")
-    print("False positive rate")
-    print(f"Max: {np.max(fpr_list):.2f}\tMin: {np.min(fpr_list):.2f}\tMean: {np.mean(fpr_list):.2f}\tStd dev: {np.std(fpr_list):.2f}")
+    summary += "\n\n"
+    summary += "Precision\n"
+    summary += f"Max: {np.max(precision_list):.2f}\tMin: {np.min(precision_list):.2f}\tMean: {np.mean(precision_list):.2f}\tStd dev: {np.std(precision_list):.2f}\n"
+    summary += "True positive rate\n"
+    summary += f"Max: {np.max(tpr_list):.2f}\tMin: {np.min(tpr_list):.2f}\tMean: {np.mean(tpr_list):.2f}\tStd dev: {np.std(tpr_list):.2f}\n"
+    summary += "False positive rate\n"
+    summary += f"Max: {np.max(fpr_list):.2f}\tMin: {np.min(fpr_list):.2f}\tMean: {np.mean(fpr_list):.2f}\tStd dev: {np.std(fpr_list):.2f}"
+    
+    print(summary)
+
+    if save_report:
+        with open(f"results/{dataset_name_str}_{classifier_type_str}_results.txt", "w") as file:
+            file.writelines(summary)
+            file.close()
 

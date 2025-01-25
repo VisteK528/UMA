@@ -7,7 +7,7 @@ from sklearn.model_selection import KFold
 from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
 
 
-ATTEMPTS = 2
+ATTEMPTS = 6
 SAVE_IMAGES = True
 
 if __name__ == "__main__":
@@ -97,6 +97,6 @@ if __name__ == "__main__":
     plt.grid()
 
     if SAVE_IMAGES:
-        plt.savefig("images/wine3_id3_select_depth.pdf", dpi=300, bbox_inches = "tight")
+        plt.savefig("images/wine_id3_select_depth.pdf", dpi=300, bbox_inches = "tight")
 
 

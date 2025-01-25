@@ -7,7 +7,7 @@ from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
 
 
 
-ATTEMPTS = 25
+ATTEMPTS = 10
 SAVE_IMAGES = True
 
 if __name__ == "__main__":
@@ -21,13 +21,15 @@ if __name__ == "__main__":
 
     y_true = []
     y_pred_test = []
-    accuracies = []
+    test_accuracies = []
+    train_accuracies = []
 
-    depths = [2, 4, 6, 8, 10]
+    depths = [0, 2, 4, 6, 8, 10]
 
     for depth in depths:
         print(f"Depth: {depth}")
-        depth_accuracies = []
+        test_depth_accuracies = []
+        train_depth_accuracies = []
         for attempt_nb in range(1, ATTEMPTS + 1):
             print(f"Attempt: {attempt_nb}")
             X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.1)
@@ -54,30 +56,41 @@ if __name__ == "__main__":
             # Evaluate best model on test data
             print(f"Best model accuracy on validation data: {best_score_k_fold * 100:.2f}")
             best_k_fold_accuracy = best_model_k_fold.evaluate(X_test, Y_test)
-            depth_accuracies.append(best_k_fold_accuracy)
+            best_k_fold_accuracy_train = best_model_k_fold.evaluate(X_train, Y_train)
 
-        accuracies.append(depth_accuracies)
+            test_depth_accuracies.append(best_k_fold_accuracy)
+            train_depth_accuracies.append(best_k_fold_accuracy_train)
 
-    accuracies = np.array(accuracies) * 100
+        test_accuracies.append(test_depth_accuracies)
+        train_accuracies.append(train_depth_accuracies)
 
-    means_accuracies = [np.mean(depth_accuracies)for depth_accuracies in accuracies]
-    min_accuracies = [np.min(depth_accuracies) for depth_accuracies in accuracies]
-    max_accuracies = [np.max(depth_accuracies) for depth_accuracies in accuracies]
+    test_accuracies = np.array(test_accuracies) * 100
+    train_accuracies = np.array(train_accuracies) * 100
 
+    means_accuracies = [np.mean(depth_accuracies) for depth_accuracies in test_accuracies]
+    min_accuracies = [np.min(depth_accuracies) for depth_accuracies in test_accuracies]
+    max_accuracies = [np.max(depth_accuracies) for depth_accuracies in test_accuracies]
 
+    train_means_accuracies = [np.mean(depth_accuracies) for depth_accuracies in train_accuracies]
+    train_min_accuracies = [np.min(depth_accuracies) for depth_accuracies in train_accuracies]
+    train_max_accuracies = [np.max(depth_accuracies) for depth_accuracies in train_accuracies]
 
-    # Overlay the line plot for the means
-    plt.plot(depths, means_accuracies, marker="o", color="blue", label="Mean Accuracy", linewidth=2)
+    plt.plot(depths, train_means_accuracies, marker="o", color="red", label="Train mean accuracy", linewidth=2)
+    plt.fill_between(depths, train_min_accuracies, train_max_accuracies, color='red', alpha=0.2)
+    for x, y in zip(depths, train_means_accuracies):
+        label = f"{y:.2f}%"
+        plt.annotate(label, (x, y), textcoords="offset points", xytext=(0, 14), ha='center')
+
+    plt.plot(depths, means_accuracies, marker="o", color="blue", label="Test mean accuracy", linewidth=2)
     plt.fill_between(depths, min_accuracies, max_accuracies, color='blue', alpha=0.2)
 
     for x, y in zip(depths, means_accuracies):
         label = f"{y:.2f}%"
-        plt.annotate(label, (x, y), textcoords="offset points", xytext=(0, 10), ha='center')
+        plt.annotate(label, (x, y), textcoords="offset points", xytext=(0, 4), ha='center')
 
-        # Add titles and labels
-    plt.xlabel("Depth", fontsize=12)
+    plt.xlabel("Tree Depth", fontsize=12)
     plt.ylabel("Accuracy [%]", fontsize=12)
-    plt.ylim(0, 100)
+    plt.legend()
     plt.grid()
 
     if SAVE_IMAGES:

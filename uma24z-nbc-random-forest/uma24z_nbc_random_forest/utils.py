@@ -48,6 +48,7 @@ class MeasuresOfQuality:
 
         self._cm = np.zeros((N, N))
         for y_pred, y_true in zip(self._y_pred, self._y_true):
+            y_pred = np.argmax(y_pred)
             i, j = self._unique_classes_dict.get(y_pred), self._unique_classes_dict.get(y_true)
             self._cm[i, j] += 1
 

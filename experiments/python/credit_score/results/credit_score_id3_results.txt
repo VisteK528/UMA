@@ -1,3 +1,4 @@
+ATTEMPTS=25
 Accuracies -> train dataset
 Max: 70.80	Min: 69.45	Mean: 70.36	Std dev: 0.30
 Accuracies -> test dataset

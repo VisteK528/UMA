@@ -1,0 +1,378 @@
+Attempt: 1
+Training took: 88.962 s
+Accuracy after predicting 8677 samples: 75.59%
+Training took: 88.444 s
+Accuracy after predicting 8677 samples: 75.86%
+Training took: 88.931 s
+Accuracy after predicting 8677 samples: 76.40%
+Training took: 89.167 s
+Accuracy after predicting 8677 samples: 76.58%
+Training took: 88.847 s
+Accuracy after predicting 8676 samples: 74.86%
+Best model accuracy on validation data: 76.58
+Accuracy after predicting 43384 samples: 95.30%
+Accuracy after predicting 4821 samples: 76.17%
+Attempt: 2
+Training took: 89.012 s
+Accuracy after predicting 8677 samples: 76.25%
+Training took: 88.976 s
+Accuracy after predicting 8677 samples: 75.50%
+Training took: 89.147 s
+Accuracy after predicting 8677 samples: 75.04%
+Training took: 89.617 s
+Accuracy after predicting 8677 samples: 75.45%
+Training took: 87.817 s
+Accuracy after predicting 8676 samples: 75.76%
+Best model accuracy on validation data: 76.25
+Accuracy after predicting 43384 samples: 95.24%
+Accuracy after predicting 4821 samples: 76.33%
+Attempt: 3
+Training took: 88.450 s
+Accuracy after predicting 8677 samples: 76.52%
+Training took: 87.910 s
+Accuracy after predicting 8677 samples: 75.90%
+Training took: 88.602 s
+Accuracy after predicting 8677 samples: 75.41%
+Training took: 90.571 s
+Accuracy after predicting 8677 samples: 74.75%
+Training took: 88.872 s
+Accuracy after predicting 8676 samples: 74.71%
+Best model accuracy on validation data: 76.52
+Accuracy after predicting 43384 samples: 95.29%
+Accuracy after predicting 4821 samples: 76.23%
+Attempt: 4
+Training took: 89.144 s
+Accuracy after predicting 8677 samples: 75.74%
+Training took: 87.400 s
+Accuracy after predicting 8677 samples: 75.20%
+Training took: 88.393 s
+Accuracy after predicting 8677 samples: 75.57%
+Training took: 88.369 s
+Accuracy after predicting 8677 samples: 75.78%
+Training took: 89.415 s
+Accuracy after predicting 8676 samples: 75.83%
+Best model accuracy on validation data: 75.83
+Accuracy after predicting 43384 samples: 95.13%
+Accuracy after predicting 4821 samples: 75.69%
+Attempt: 5
+Training took: 88.947 s
+Accuracy after predicting 8677 samples: 76.32%
+Training took: 88.325 s
+Accuracy after predicting 8677 samples: 76.10%
+Training took: 88.327 s
+Accuracy after predicting 8677 samples: 76.09%
+Training took: 89.956 s
+Accuracy after predicting 8677 samples: 75.54%
+Training took: 88.317 s
+Accuracy after predicting 8676 samples: 75.51%
+Best model accuracy on validation data: 76.32
+Accuracy after predicting 43384 samples: 95.25%
+Accuracy after predicting 4821 samples: 75.90%
+Attempt: 6
+Training took: 89.125 s
+Accuracy after predicting 8677 samples: 76.03%
+Training took: 88.656 s
+Accuracy after predicting 8677 samples: 75.46%
+Training took: 87.907 s
+Accuracy after predicting 8677 samples: 75.63%
+Training took: 88.171 s
+Accuracy after predicting 8677 samples: 75.68%
+Training took: 87.461 s
+Accuracy after predicting 8676 samples: 75.29%
+Best model accuracy on validation data: 76.03
+Accuracy after predicting 43384 samples: 95.18%
+Accuracy after predicting 4821 samples: 76.19%
+Attempt: 7
+Training took: 89.322 s
+Accuracy after predicting 8677 samples: 75.41%
+Training took: 88.224 s
+Accuracy after predicting 8677 samples: 76.05%
+Training took: 87.781 s
+Accuracy after predicting 8677 samples: 75.44%
+Training took: 88.666 s
+Accuracy after predicting 8677 samples: 75.16%
+Training took: 88.912 s
+Accuracy after predicting 8676 samples: 75.52%
+Best model accuracy on validation data: 76.05
+Accuracy after predicting 43384 samples: 95.19%
+Accuracy after predicting 4821 samples: 76.56%
+Attempt: 8
+Training took: 89.734 s
+Accuracy after predicting 8677 samples: 75.30%
+Training took: 88.186 s
+Accuracy after predicting 8677 samples: 75.33%
+Training took: 87.706 s
+Accuracy after predicting 8677 samples: 75.75%
+Training took: 88.629 s
+Accuracy after predicting 8677 samples: 75.71%
+Training took: 88.475 s
+Accuracy after predicting 8676 samples: 75.75%
+Best model accuracy on validation data: 75.75
+Accuracy after predicting 43384 samples: 95.13%
+Accuracy after predicting 4821 samples: 76.64%
+Attempt: 9
+Training took: 88.750 s
+Accuracy after predicting 8677 samples: 75.79%
+Training took: 90.266 s
+Accuracy after predicting 8677 samples: 76.40%
+Training took: 87.705 s
+Accuracy after predicting 8677 samples: 75.20%
+Training took: 88.694 s
+Accuracy after predicting 8677 samples: 75.68%
+Training took: 87.761 s
+Accuracy after predicting 8676 samples: 75.69%
+Best model accuracy on validation data: 76.40
+Accuracy after predicting 43384 samples: 95.26%
+Accuracy after predicting 4821 samples: 76.08%
+Attempt: 10
+Training took: 89.617 s
+Accuracy after predicting 8677 samples: 75.24%
+Training took: 88.559 s
+Accuracy after predicting 8677 samples: 74.76%
+Training took: 89.504 s
+Accuracy after predicting 8677 samples: 75.81%
+Training took: 89.963 s
+Accuracy after predicting 8677 samples: 75.46%
+Training took: 88.492 s
+Accuracy after predicting 8676 samples: 75.74%
+Best model accuracy on validation data: 75.81
+Accuracy after predicting 43384 samples: 95.13%
+Accuracy after predicting 4821 samples: 74.69%
+Attempt: 11
+Training took: 89.079 s
+Accuracy after predicting 8677 samples: 76.26%
+Training took: 88.428 s
+Accuracy after predicting 8677 samples: 75.60%
+Training took: 87.754 s
+Accuracy after predicting 8677 samples: 75.64%
+Training took: 90.015 s
+Accuracy after predicting 8677 samples: 75.28%
+Training took: 87.516 s
+Accuracy after predicting 8676 samples: 75.82%
+Best model accuracy on validation data: 76.26
+Accuracy after predicting 43384 samples: 95.23%
+Accuracy after predicting 4821 samples: 75.71%
+Attempt: 12
+Training took: 89.122 s
+Accuracy after predicting 8677 samples: 75.72%
+Training took: 88.318 s
+Accuracy after predicting 8677 samples: 75.28%
+Training took: 93.134 s
+Accuracy after predicting 8677 samples: 75.78%
+Training took: 94.946 s
+Accuracy after predicting 8677 samples: 75.52%
+Training took: 90.570 s
+Accuracy after predicting 8676 samples: 76.30%
+Best model accuracy on validation data: 76.30
+Accuracy after predicting 43384 samples: 95.25%
+Accuracy after predicting 4821 samples: 77.04%
+Attempt: 13
+Training took: 87.404 s
+Accuracy after predicting 8677 samples: 75.26%
+Training took: 91.099 s
+Accuracy after predicting 8677 samples: 75.99%
+Training took: 89.639 s
+Accuracy after predicting 8677 samples: 75.74%
+Training took: 91.128 s
+Accuracy after predicting 8677 samples: 75.53%
+Training took: 89.943 s
+Accuracy after predicting 8676 samples: 76.00%
+Best model accuracy on validation data: 76.00
+Accuracy after predicting 43384 samples: 95.19%
+Accuracy after predicting 4821 samples: 75.50%
+Attempt: 14
+Training took: 87.927 s
+Accuracy after predicting 8677 samples: 75.52%
+Training took: 87.120 s
+Accuracy after predicting 8677 samples: 75.84%
+Training took: 88.525 s
+Accuracy after predicting 8677 samples: 75.45%
+Training took: 89.104 s
+Accuracy after predicting 8677 samples: 75.12%
+Training took: 89.481 s
+Accuracy after predicting 8676 samples: 75.20%
+Best model accuracy on validation data: 75.84
+Accuracy after predicting 43384 samples: 95.15%
+Accuracy after predicting 4821 samples: 76.39%
+Attempt: 15
+Training took: 88.456 s
+Accuracy after predicting 8677 samples: 75.07%
+Training took: 90.802 s
+Accuracy after predicting 8677 samples: 75.75%
+Training took: 89.878 s
+Accuracy after predicting 8677 samples: 75.34%
+Training took: 88.452 s
+Accuracy after predicting 8677 samples: 75.49%
+Training took: 90.218 s
+Accuracy after predicting 8676 samples: 75.75%
+Best model accuracy on validation data: 75.75
+Accuracy after predicting 43384 samples: 95.13%
+Accuracy after predicting 4821 samples: 76.35%
+Attempt: 16
+Training took: 89.550 s
+Accuracy after predicting 8677 samples: 74.93%
+Training took: 89.970 s
+Accuracy after predicting 8677 samples: 75.92%
+Training took: 88.166 s
+Accuracy after predicting 8677 samples: 75.91%
+Training took: 90.139 s
+Accuracy after predicting 8677 samples: 75.73%
+Training took: 88.387 s
+Accuracy after predicting 8676 samples: 76.11%
+Best model accuracy on validation data: 76.11
+Accuracy after predicting 43384 samples: 95.19%
+Accuracy after predicting 4821 samples: 75.05%
+Attempt: 17
+Training took: 88.789 s
+Accuracy after predicting 8677 samples: 75.11%
+Training took: 88.110 s
+Accuracy after predicting 8677 samples: 75.86%
+Training took: 88.627 s
+Accuracy after predicting 8677 samples: 75.46%
+Training took: 89.454 s
+Accuracy after predicting 8677 samples: 75.03%
+Training took: 91.144 s
+Accuracy after predicting 8676 samples: 75.63%
+Best model accuracy on validation data: 75.86
+Accuracy after predicting 43384 samples: 95.15%
+Accuracy after predicting 4821 samples: 75.65%
+Attempt: 18
+Training took: 88.134 s
+Accuracy after predicting 8677 samples: 75.49%
+Training took: 88.643 s
+Accuracy after predicting 8677 samples: 75.18%
+Training took: 90.349 s
+Accuracy after predicting 8677 samples: 75.18%
+Training took: 88.766 s
+Accuracy after predicting 8677 samples: 75.84%
+Training took: 86.770 s
+Accuracy after predicting 8676 samples: 75.63%
+Best model accuracy on validation data: 75.84
+Accuracy after predicting 43384 samples: 95.15%
+Accuracy after predicting 4821 samples: 75.71%
+Attempt: 19
+Training took: 89.263 s
+Accuracy after predicting 8677 samples: 75.49%
+Training took: 90.464 s
+Accuracy after predicting 8677 samples: 75.64%
+Training took: 88.802 s
+Accuracy after predicting 8677 samples: 76.43%
+Training took: 88.444 s
+Accuracy after predicting 8677 samples: 75.00%
+Training took: 88.865 s
+Accuracy after predicting 8676 samples: 75.05%
+Best model accuracy on validation data: 76.43
+Accuracy after predicting 43384 samples: 95.27%
+Accuracy after predicting 4821 samples: 75.46%
+Attempt: 20
+Training took: 87.625 s
+Accuracy after predicting 8677 samples: 75.53%
+Training took: 88.769 s
+Accuracy after predicting 8677 samples: 76.01%
+Training took: 88.820 s
+Accuracy after predicting 8677 samples: 75.60%
+Training took: 88.176 s
+Accuracy after predicting 8677 samples: 76.44%
+Training took: 88.174 s
+Accuracy after predicting 8676 samples: 74.97%
+Best model accuracy on validation data: 76.44
+Accuracy after predicting 43384 samples: 95.27%
+Accuracy after predicting 4821 samples: 75.27%
+Attempt: 21
+Training took: 88.945 s
+Accuracy after predicting 8677 samples: 76.28%
+Training took: 89.589 s
+Accuracy after predicting 8677 samples: 75.01%
+Training took: 89.281 s
+Accuracy after predicting 8677 samples: 75.39%
+Training took: 89.946 s
+Accuracy after predicting 8677 samples: 75.21%
+Training took: 88.760 s
+Accuracy after predicting 8676 samples: 76.09%
+Best model accuracy on validation data: 76.28
+Accuracy after predicting 43384 samples: 95.23%
+Accuracy after predicting 4821 samples: 75.79%
+Attempt: 22
+Training took: 89.397 s
+Accuracy after predicting 8677 samples: 76.07%
+Training took: 91.208 s
+Accuracy after predicting 8677 samples: 76.43%
+Training took: 87.314 s
+Accuracy after predicting 8677 samples: 75.39%
+Training took: 88.568 s
+Accuracy after predicting 8677 samples: 75.11%
+Training took: 88.066 s
+Accuracy after predicting 8676 samples: 74.63%
+Best model accuracy on validation data: 76.43
+Accuracy after predicting 43384 samples: 95.27%
+Accuracy after predicting 4821 samples: 76.52%
+Attempt: 23
+Training took: 88.144 s
+Accuracy after predicting 8677 samples: 75.41%
+Training took: 90.052 s
+Accuracy after predicting 8677 samples: 76.79%
+Training took: 90.097 s
+Accuracy after predicting 8677 samples: 75.54%
+Training took: 87.453 s
+Accuracy after predicting 8677 samples: 74.50%
+Training took: 90.364 s
+Accuracy after predicting 8676 samples: 75.47%
+Best model accuracy on validation data: 76.79
+Accuracy after predicting 43384 samples: 95.35%
+Accuracy after predicting 4821 samples: 75.57%
+Attempt: 24
+Training took: 88.385 s
+Accuracy after predicting 8677 samples: 76.05%
+Training took: 89.565 s
+Accuracy after predicting 8677 samples: 75.81%
+Training took: 88.572 s
+Accuracy after predicting 8677 samples: 75.43%
+Training took: 86.988 s
+Accuracy after predicting 8677 samples: 75.41%
+Training took: 90.226 s
+Accuracy after predicting 8676 samples: 75.54%
+Best model accuracy on validation data: 76.05
+Accuracy after predicting 43384 samples: 95.17%
+Accuracy after predicting 4821 samples: 75.48%
+Attempt: 25
+Training took: 88.395 s
+Accuracy after predicting 8677 samples: 76.25%
+Training took: 87.534 s
+Accuracy after predicting 8677 samples: 75.24%
+Training took: 88.219 s
+Accuracy after predicting 8677 samples: 75.29%
+Training took: 90.219 s
+Accuracy after predicting 8677 samples: 75.96%
+Training took: 88.098 s
+Accuracy after predicting 8676 samples: 75.83%
+Best model accuracy on validation data: 76.25
+Accuracy after predicting 43384 samples: 95.23%
+Accuracy after predicting 4821 samples: 76.08%
+
+ATTEMPTS=25
+
+Accuracies -> train dataset
+Max: 95.35	Min: 95.13	Mean: 95.21	Std dev: 0.06
+Accuracies -> test dataset
+Max: 77.04	Min: 74.69	Mean: 75.92	Std dev: 0.53
+
+Precision for 0 vs rest
+Max: 0.80	Min: 0.76	Mean: 0.78	Std dev: 0.01
+True positive rate for 0 vs rest
+Max: 0.79	Min: 0.75	Mean: 0.77	Std dev: 0.01
+False positive rate for 0 vs rest
+Max: 0.11	Min: 0.08	Mean: 0.10	Std dev: 0.01
+
+Precision for 1 vs rest
+Max: 0.81	Min: 0.77	Mean: 0.80	Std dev: 0.01
+True positive rate for 1 vs rest
+Max: 0.78	Min: 0.76	Mean: 0.77	Std dev: 0.01
+False positive rate for 1 vs rest
+Max: 0.26	Min: 0.22	Mean: 0.24	Std dev: 0.01
+
+Precision for 2 vs rest
+Max: 0.64	Min: 0.58	Mean: 0.61	Std dev: 0.02
+True positive rate for 2 vs rest
+Max: 0.71	Min: 0.67	Mean: 0.69	Std dev: 0.01
+False positive rate for 2 vs rest
+Max: 0.09	Min: 0.07	Mean: 0.08	Std dev: 0.00
