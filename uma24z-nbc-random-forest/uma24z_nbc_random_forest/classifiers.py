@@ -16,6 +16,18 @@ from collections import Counter
 from .exceptions import ModelAlreadyTrainedError, ModelNotTrainedError
 
 
+def _check_input(data: np.array, classes: np.array):
+    if data.ndim != 2:
+        raise ValueError("Model expects train data to have ndim=2!")
+
+    if data.shape[1] == 0:
+        raise ValueError(f"Found array with 0 feature(s) (shape={data.shape}) while a minimum of 1 is required.")
+
+    if classes.shape[0] == 0:
+        raise ValueError(
+            f"Input array `classes` is empty (shape={classes.shape}). A minimum of 1 class is required.")
+
+
 class Classifier:
     def __init__(self):
         self._trained = False
@@ -45,6 +57,9 @@ class Classifier:
         """
         if self._trained:
             raise ModelAlreadyTrainedError("The model has been already trained and cannot be re-trained!")
+
+        _check_input(data, classes)
+
         self._possible_classes = sorted(list(Counter(classes).keys()))
 
     def _predict_sample(self, data: np.array) -> np.array:
@@ -87,6 +102,9 @@ class Classifier:
         if not self._trained:
             raise ModelNotTrainedError("The prediction cannot be done due to the model not being trained!")
 
+        if (data.ndim == 1 and data.shape[0] == 0) or data.shape[1] == 0:
+            raise ValueError(f"Found array with 0 feature(s) (shape={data.shape}) while a minimum of 1 is required.")
+
         if data.ndim == 1:
             return self._predict_sample(data)
         else:
@@ -112,6 +130,9 @@ class Classifier:
             samples to the total number of samples.
 
         """
+
+        _check_input(data, classes)
+
         samples = len(classes)
         positively_predicted = 0
         for i, subdataset in enumerate(zip(data, classes), 1):

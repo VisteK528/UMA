@@ -23,6 +23,21 @@ def assign_bin(value, edges):
 
 
 class NaiveBayes(Classifier):
+    """
+    A Naive Bayes classifier.
+
+    Parameters
+    ----------
+    discrete_x : bool, optional
+        Whether the input features (`X`) are discrete.
+        - `False` (default): Features are treated as continuous, and discretization will be applied.
+        - `True`: All input features are treated as categorical/discrete.
+    discretization_type : str or None, optional
+        The type of discretization to apply to continuous features if `discrete_x` is `False`.
+        - `None` (default): No discretization is applied.
+        - `"uniform"`: Uniform discretization is applied.
+        - `"percentile"`: Percentile-based discretization is applied.
+    """
     def __init__(self, discrete_x=False, discretization_type=None):
         super().__init__()
         self._priors = {}
@@ -61,9 +76,7 @@ class NaiveBayes(Classifier):
         self._trained = True
 
 
-    def _uniform_discretization(self, data: np.ndarray) -> np.ndarray:
-        intervals = 10
-
+    def _uniform_discretization(self, data: np.ndarray, intervals=10) -> np.ndarray:
         discrete_array = np.zeros(data.shape)
         for i in range(data.shape[1]):
             min_value = np.min(data[:, i])

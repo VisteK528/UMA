@@ -19,13 +19,40 @@ from joblib import Parallel, delayed
 
 
 class RandomForestClassifier(Classifier):
-    def __init__(self, classifiers_number: int, tree_percentage=1.0, **kwargs):
+    """
+    A classifier that combines decision trees and optionally Naive Bayes classifiers
+    to create a robust ensemble classification model.
+
+    Parameters
+    ----------
+    classifiers_number : int
+        The total number of classifiers in the ensemble.
+    tree_percentage : float
+        The fraction of classifiers that will be decision trees. Must be a value between 0 and 1.
+    n_jobs : int or None
+        The number of parallel jobs to use for training.
+        - `None`: Defaults to 1 (single-threaded).
+        - `-1`: Uses all available CPU cores.
+        - Any positive integer specifies the number of cores to use.
+    discrete_x : bool
+        Whether the input features (`X`) are discrete.
+        - If `True`, all input features are treated as categorical/discrete.
+    discretization_type : str or None
+        The type of discretization to apply to continuous features if `discrete_x` is `False`.
+        Discretization is only applied to data passed to Naive Bayes classifiers.
+        - `None`: No discretization is applied.
+        - `"uniform"`: Uniform discretization is applied.
+        - `"percentile"`: Percentile-based discretization is applied.
+    """
+
+    def __init__(self, classifiers_number: int, tree_percentage=1.0, n_jobs=None, discrete_x=True, discretization_type=None):
         super().__init__()
         self._classifiers_number = classifiers_number
         self._tree_percentage = tree_percentage
         self._models = []
-        self._discrete_x = kwargs.get("discrete_x", True)
-        self._discretization_type = kwargs.get("discretization_type", None)
+        self._n_jobs = n_jobs
+        self._discrete_x = discrete_x
+        self._discretization_type = discretization_type
 
     @staticmethod
     def bootstrap(x: np.ndarray, y: np.ndarray) -> Tuple[np.array, np.array]:
@@ -46,12 +73,19 @@ class RandomForestClassifier(Classifier):
 
         trees_number = int(self._tree_percentage * self._classifiers_number)
 
+        if self._n_jobs is None:
+            used_jobs = 1
+        elif self._n_jobs == -1:
+            used_jobs = -1
+        else:
+            used_jobs = max(1, self._n_jobs)
+
         self._models.extend(
-            Parallel(n_jobs=-1)(delayed(self._train_tree)(data, classes) for _ in range(trees_number))
+            Parallel(n_jobs=used_jobs)(delayed(self._train_tree)(data, classes) for _ in range(trees_number))
         )
 
         self._models.extend(
-            Parallel(n_jobs=-1)(
+            Parallel(n_jobs=used_jobs)(
                 delayed(self._train_naive_bayes)(data, classes) for _ in range(self._classifiers_number - trees_number))
         )
         self._trained = True
