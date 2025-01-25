@@ -5,6 +5,7 @@ from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_multi
 DEPTH = 8
 ATTEMPTS = 25
 SAVE_IMAGES = True
+SAVE_RESULTS = True
 
 if __name__ == "__main__":
     X = np.genfromtxt("../../../data_processed/credit_score/percentiles/X.csv", dtype=float, delimiter=",")
@@ -21,7 +22,7 @@ if __name__ == "__main__":
                                                                                                               ATTEMPTS,
                                                                                                               model,
                                                                                                               verbose=1)
-    evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, ATTEMPTS, SAVE_IMAGES,
+    evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, ATTEMPTS, SAVE_IMAGES, SAVE_RESULTS,
                               "credit_score", "id3", ["poor", "standard", "good"])
 
 

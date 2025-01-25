@@ -5,7 +5,7 @@ from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_binar
 ATTEMPTS = 25
 SAVE_IMAGES = True
 SAVE_RESULTS = True
-DEPTH = 0
+DEPTH = 6
 
 if __name__ == "__main__":
     X = np.loadtxt("../../../data_processed/wine/simple_processing/X.csv", dtype=float, delimiter=",")
