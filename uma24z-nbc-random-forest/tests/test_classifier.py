@@ -5,8 +5,8 @@ from uma24z_nbc_random_forest.exceptions import ModelNotTrainedError
 
 
 def test_invalid_input_fit_x():
-    x = [[], []]
-    y = [0, 1]
+    x = np.array([[], []])
+    y = np.array([0, 1])
 
     model = Classifier()
     with pytest.raises(ValueError):
@@ -14,8 +14,8 @@ def test_invalid_input_fit_x():
 
 
 def test_invalid_input_fit_y():
-    x = [[1], [2]]
-    y = []
+    x = np.array([[1], [2]])
+    y = np.array([])
 
     model = Classifier()
     with pytest.raises(ValueError):
@@ -23,8 +23,8 @@ def test_invalid_input_fit_y():
 
 
 def test_invalid_input_evaluate_x():
-    x = [[], []]
-    y = [0, 1]
+    x = np.array([[], []])
+    y = np.array([0, 1])
 
     model = Classifier()
     with pytest.raises(ValueError):
@@ -32,8 +32,8 @@ def test_invalid_input_evaluate_x():
 
 
 def test_invalid_input_evaluate_y():
-    x = [[1], [2]]
-    y = []
+    x = np.array([[1], [2]])
+    y = np.array([])
 
     model = Classifier()
     with pytest.raises(ValueError):
