@@ -34,6 +34,13 @@ cd UMA/
 pip install uma24z-nbc-random-forest/
 ```
 
+## Testy jednostkowe
+Gdy proces instalacji pakietu sie zakończył, możliwe jest uruchomienie testów jednoskowych z wykorzystaniem następującej komendy z katalogu nadrzędnego:
+
+```bash
+pytest uma24z-nbc-random-forest/tests/
+```
+
 ## Eksperymenty
 Eksperymenty zostały przeprowadzone na 4 różnych zbiorach danych:
 - `wine`

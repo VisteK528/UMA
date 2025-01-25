@@ -67,6 +67,18 @@ class Node:
 
 
 class DecisionTreeClassifier(Classifier):
+    """
+    An ID3 decision tree classifier.
+
+    Parameters
+    ----------
+    max_depth : int
+        The maximum depth of the decision tree. Limits the tree's growth to control overfitting.
+    random_forest_version : bool, optional
+        Whether this decision tree is being used as part of a random forest ensemble.
+        - `False` (default): Standard decision tree behavior.
+        - `True`: Optimized for use in a random forest, selects only sqrt(N) attributes for potential split in each node.
+    """
     def __init__(self, max_depth, random_forest_version=False):
         super().__init__()
         self._max_depth = max_depth

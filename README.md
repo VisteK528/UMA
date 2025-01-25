@@ -6,6 +6,7 @@
 * [Overview](#overview)
 * [Project structure](#project-structure)
 * [Installation](#installation)
+* [Unit tests](#unit-tests)
 * [Experiments](#experiments)
 
 ## Overview
@@ -32,6 +33,13 @@ To install the package run these commands from the parent directory
 git clone https://github.com/VisteK528/UMA.git
 cd UMA/
 pip install uma24z-nbc-random-forest/
+```
+
+## Unit tests
+After the installation process is completed one can run unit tests if want by running following command from the parent directory:
+
+```bash
+pytest uma24z-nbc-random-forest/tests/
 ```
 
 ## Experiments 
