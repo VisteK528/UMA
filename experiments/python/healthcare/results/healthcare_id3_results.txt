@@ -1,26 +1,29 @@
-ATTEMPTS=25
+ATTEMPTS=10
 Accuracies -> train dataset
-Max: 40.62	Min: 38.51	Mean: 39.66	Std dev: 0.61
+Max: 35.86	Min: 34.89	Mean: 35.38	Std dev: 0.31
 Accuracies -> test dataset
-Max: 35.19	Min: 32.43	Mean: 34.17	Std dev: 0.56
+Max: 34.65	Min: 31.60	Mean: 33.63	Std dev: 0.79
 
-Precision for 0 vs rest
-Max: 0.58	Min: 0.27	Mean: 0.40	Std dev: 0.09
-True positive rate for 0 vs rest
-Max: 0.36	Min: 0.32	Mean: 0.34	Std dev: 0.01
-False positive rate for 0 vs rest
-Max: 0.34	Min: 0.32	Mean: 0.33	Std dev: 0.01
 
-Precision for 1 vs rest
-Max: 0.51	Min: 0.18	Mean: 0.33	Std dev: 0.08
-True positive rate for 1 vs rest
-Max: 0.37	Min: 0.32	Mean: 0.34	Std dev: 0.01
-False positive rate for 1 vs rest
-Max: 0.34	Min: 0.31	Mean: 0.33	Std dev: 0.01
+Precision 0 vs rest
+Max: 0.54	Min: 0.24	Mean: 0.35	Std dev: 0.09
+True positive rate
+Max: 0.40	Min: 0.34	Mean: 0.38	Std dev: 0.02
+False positive rate
+Max: 0.45	Min: 0.35	Mean: 0.39	Std dev: 0.03
 
-Precision for 2 vs rest
-Max: 0.41	Min: 0.19	Mean: 0.29	Std dev: 0.06
-True positive rate for 2 vs rest
-Max: 0.37	Min: 0.32	Mean: 0.34	Std dev: 0.01
-False positive rate for 2 vs rest
-Max: 0.34	Min: 0.31	Mean: 0.33	Std dev: 0.01
+
+Precision 1 vs rest
+Max: 0.53	Min: 0.26	Mean: 0.35	Std dev: 0.08
+True positive rate
+Max: 0.42	Min: 0.36	Mean: 0.39	Std dev: 0.02
+False positive rate
+Max: 0.45	Min: 0.35	Mean: 0.39	Std dev: 0.03
+
+
+Precision 2 vs rest
+Max: 0.51	Min: 0.23	Mean: 0.34	Std dev: 0.08
+True positive rate
+Max: 0.41	Min: 0.35	Mean: 0.38	Std dev: 0.02
+False positive rate
+Max: 0.45	Min: 0.36	Mean: 0.39	Std dev: 0.03

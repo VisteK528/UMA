@@ -5,7 +5,7 @@ from uma24z_nbc_random_forest.experiments_utils import run_tests, evaluate_multi
 ATTEMPTS = 10
 SAVE_IMAGES = True
 SAVE_RESULTS = True
-DEPTH = 2
+DEPTH = 6
 
 
 if __name__ == "__main__":
