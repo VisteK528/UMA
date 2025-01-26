@@ -16,7 +16,7 @@ if __name__ == "__main__":
     X = xx
     y = np.loadtxt("../../../data_processed/credit_score/percentiles/y.csv", dtype=float, delimiter=",")
 
-    model = RandomForestClassifier(classifiers_number=50, tree_percentage=1.0)
+    model = RandomForestClassifier(classifiers_number=50, tree_percentage=1.0, n_jobs=24)
     y_true_test, y_pred_test, y_true_train, y_pred_train, test_accuracies, train_accuracies, _, _ = run_tests(X, y,
                                                                                                               ATTEMPTS,
                                                                                                               model,

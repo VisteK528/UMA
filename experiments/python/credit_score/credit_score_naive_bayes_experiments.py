@@ -23,5 +23,3 @@ if __name__ == "__main__":
                                                                                                               verbose=1)
     evaluate_multiclass_tests(y_true_test, y_pred_test, test_accuracies, train_accuracies, ATTEMPTS, SAVE_IMAGES, SAVE_RESULTS,
                               "credit_score", "naive_bayes", ["poor", "standard", "good"])
-
-

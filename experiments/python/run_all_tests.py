@@ -1,12 +1,9 @@
 import subprocess
 
 scripts = [
+    {"script": "credit_score_id3_experiments.py", "dir": "credit_score/"},
     {"script": "credit_score_forest_id3_experiments.py", "dir": "credit_score/"},
     {"script": "credit_score_forest_id3_bayes_experiments.py", "dir": "credit_score/"},
-    {"script": "diabetes_naive_bayes_experiments.py", "dir": "diabetes/"},
-    {"script": "diabetes_id3_experiments.py", "dir": "diabetes/"},
-    {"script": "diabetes_forest_id3_experiments.py", "dir": "diabetes/"},
-    {"script": "diabetes_forest_id3_bayes_experiments.py", "dir": "diabetes/"},
     {"script": "healthcare_naive_bayes_experiments.py", "dir": "healthcare/"},
     {"script": "healthcare_id3_experiments.py", "dir": "healthcare/"},
     {"script": "healthcare_forest_id3_experiments.py", "dir": "healthcare/"},

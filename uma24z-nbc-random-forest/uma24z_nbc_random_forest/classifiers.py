@@ -102,7 +102,10 @@ class Classifier:
         if not self._trained:
             raise ModelNotTrainedError("The prediction cannot be done due to the model not being trained!")
 
-        if (data.ndim == 1 and data.shape[0] == 0) or data.shape[1] == 0:
+        if data.ndim != 1 and data.ndim != 2:
+            raise ValueError(f"Input data array should have ndim=1 or ndim=2")
+
+        if data.shape[-1] == 0:
             raise ValueError(f"Found array with 0 feature(s) (shape={data.shape}) while a minimum of 1 is required.")
 
         if data.ndim == 1:
