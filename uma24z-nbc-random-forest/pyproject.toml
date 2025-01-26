@@ -4,7 +4,7 @@ version = "1.0.0"
 license = "MIT"
 description = "Package containing machine learning models implementations for Machine Learning Course at Warsaw University of Technology"
 authors = ["Piotr Patek <piotr.patek.stud@pw.edu.pl>", "Jan Potaszyński <jan.potaszynski.stud@pw.edu.pl>"]
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -15,7 +15,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.12"
+python = ">=3.9"
 numpy = ">=1.2"
 scikit-learn  = ">=1.5.1"
 pytest = ">=6.2.5"

@@ -58,8 +58,8 @@ class MeasuresOfQuality:
         self._fn = np.zeros((N,))
         for i, unique_class in enumerate(self._unique_classes):
             self._tp[i] = self._cm[i, i]
-            self._fp[i] = sum([self._cm[k, i] for k in range(N) if k != i])
-            self._fn[i] = sum([self._cm[i, k] for k in range(N) if k != i])
+            self._fp[i] = sum([self._cm[i, k] for k in range(N) if k != i])
+            self._fn[i] = sum([self._cm[k, i] for k in range(N) if k != i])
             self._tn[i] = np.sum(self._cm) - self._tp[i] - self._fp[i] - self._fn[i]
 
         self._compiled = True
