@@ -6,7 +6,6 @@ from sklearn.model_selection import KFold
 from uma24z_nbc_random_forest.id3 import DecisionTreeClassifier
 
 
-
 ATTEMPTS = 10
 SAVE_IMAGES = True
 
